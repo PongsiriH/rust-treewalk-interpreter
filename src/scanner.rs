@@ -1,5 +1,5 @@
-use std::char;
 use crate::token::{Literal, Token, TokenType, KEYWORDS};
+use std::char;
 
 pub struct Scanner {
     pub source: Vec<char>,
@@ -83,16 +83,12 @@ impl Scanner {
                 }
             }
             '"' => {
-                println!("is \"");
-                if self.source[self.current].is_alphanumeric() || self.source[self.current] == ' ' {
-                    let text = Literal::Str(self.string());
-                    self.add_token(TokenType::StringLiteral, Some(text));
-                }
+                let text = Literal::Str(self.string());
+                self.add_token(TokenType::StringLiteral, Some(text));
             }
             _ => {
                 if self.current < self.source.len() {
                     if c.is_alphabetic() {
-                        println!("is iden");
                         let identifier: String = self.identifier();
                         if let Some(&keyword_type) = KEYWORDS.get(&identifier) {
                             self.add_token(keyword_type, None);
@@ -103,7 +99,6 @@ impl Scanner {
                             );
                         }
                     } else if c.is_digit(10) {
-                        println!("is number");
                         let number = Literal::Number(self.number());
                         self.add_token(TokenType::Number, Some(number));
                     }
